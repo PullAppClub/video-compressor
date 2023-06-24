@@ -10,7 +10,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/memphisdev/memphis.go"
 	"log"
-	"net/http"
 	"os"
 	"os/exec"
 	"strings"
@@ -171,41 +170,6 @@ func produceMessage(messageParam message) {
 func errorHandler(err error) {
 	log.Fatal(err)
 	os.Exit(1)
-}
-
-func getToken(sessionToken chan string) {
-	url := os.Getenv("MEMPHIS_HOST") + "/auth/authenticate"
-	method := "POST"
-
-	payload := strings.NewReader(fmt.Sprintf(`{
-		"username": "%s",
-		"password": "%s",
-		"token_expiry_in_minutes": 123,
-		"refresh_token_expiry_in_minutes": 10000092
-	}`, os.Getenv("MEMPHIS_USERNAME"), os.Getenv("MEMPHIS_PASSWORD")))
-
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, payload)
-
-	if err != nil {
-		errorHandler(err)
-	}
-	req.Header.Add("Content-Type", "application/json")
-
-	res, err := client.Do(req)
-	if err != nil {
-		errorHandler(err)
-	}
-	defer res.Body.Close()
-
-	data := new(tokenResponse)
-	json.NewDecoder(res.Body).Decode(data)
-
-	if err != nil {
-		errorHandler(err)
-	}
-
-	sessionToken <- data.Jwt
 }
 
 func handleVideo(fileName, bucket string, svc *s3.S3, result chan string) {
