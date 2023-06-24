@@ -130,13 +130,6 @@ type message struct {
 	OriginalFileName   string `json:"originalFileName"`
 }
 
-type tokenResponse struct {
-	Jwt                   string `json:"jwt"`
-	ExpiresIn             int    `json:"expires_in"`
-	JwtRefreshToken       string `json:"jwt_refresh_token"`
-	RefreshTokenExpiresIn int    `json:"refresh_token_expires_in"`
-}
-
 func produceMessage(messageParam message) {
 	conn, err := memphis.Connect("localhost", "root", memphis.Password("memphis"))
 	if err != nil {
