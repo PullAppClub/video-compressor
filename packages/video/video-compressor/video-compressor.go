@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/joho/godotenv"
 	"github.com/memphisdev/memphis.go"
 	"log"
 	"os"
@@ -205,37 +204,37 @@ func handleThumbnail(fileName, bucket string, svc *s3.S3, result chan string) {
 }
 
 func Main(args map[string]interface{}) map[string]interface{} {
-	godotenv.Load()
-	bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
-	bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
-	//compressedVideoName := make(chan string)
-	//thumbnail := make(chan string)
-
-	// temp
-	fileName := "video.mp4"
-	tempBucket := "pullapptemp"
-	//bucket := "pullappspaces"
-
-	//var wg sync.WaitGroup
-
-	//wg.Add(2)
-
-	svc, s3Error := createS3Instance(createS3InstanceParams{
-		secret: bucketSecret,
-		keyId:  bucketSecretId,
-	})
-	if s3Error != nil {
-		errorHandler(s3Error)
-	}
-
-	err := downloadFromS3(downloadFromS3Params{
-		fileName: fileName,
-		bucket:   tempBucket,
-		svc:      svc,
-	})
-	if err != nil {
-		errorHandler(err)
-	}
+	//godotenv.Load()
+	//bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
+	//bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
+	////compressedVideoName := make(chan string)
+	////thumbnail := make(chan string)
+	//
+	//// temp
+	//fileName := "video.mp4"
+	//tempBucket := "pullapptemp"
+	////bucket := "pullappspaces"
+	//
+	////var wg sync.WaitGroup
+	//
+	////wg.Add(2)
+	//
+	//svc, s3Error := createS3Instance(createS3InstanceParams{
+	//	secret: bucketSecret,
+	//	keyId:  bucketSecretId,
+	//})
+	//if s3Error != nil {
+	//	errorHandler(s3Error)
+	//}
+	//
+	//err := downloadFromS3(downloadFromS3Params{
+	//	fileName: fileName,
+	//	bucket:   tempBucket,
+	//	svc:      svc,
+	//})
+	//if err != nil {
+	//	errorHandler(err)
+	//}
 
 	//go func() {
 	//	defer wg.Done()
