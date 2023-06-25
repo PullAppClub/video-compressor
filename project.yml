@@ -1,5 +1,5 @@
 packages:
-  - name: video-compressor
+  - name: video
     environment:
       AWS_ACCESS_KEY: "${AWS_ACCESS_KEY}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -14,4 +14,3 @@ packages:
         main: ""
         runtime: go:default
         web: true
-        webSecure: false
