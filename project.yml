@@ -1,6 +1,5 @@
 packages:
   - name: video-compressor
-    version: 1
     routes:
       - path: /video-compressor
         methods:
