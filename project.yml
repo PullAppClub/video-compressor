@@ -7,7 +7,7 @@ packages:
       MEMPHIS_HOST: "${MEMPHIS_HOST}"
       MEMPHIS_USERNAME: "${MEMPHIS_USERNAME}"
       MEMPHIS_PASSWORD: "${MEMPHIS_PASSWORD}"
-    memorySize: 512
+
     functions:
       - name: video-compressor
         binary: false
