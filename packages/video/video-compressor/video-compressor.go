@@ -208,8 +208,8 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	godotenv.Load()
 	bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
-	compressedVideoName := make(chan string)
-	thumbnail := make(chan string)
+	//compressedVideoName := make(chan string)
+	//thumbnail := make(chan string)
 
 	// temp
 	fileName := "video.mp4"
@@ -249,11 +249,11 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	//
 	//defer wg.Wait()
 
-	produceMessage(message{
-		CompressedFileName: <-compressedVideoName,
-		ThumbnailName:      <-thumbnail,
-		OriginalFileName:   fileName,
-	})
+	//produceMessage(message{
+	//	CompressedFileName: <-compressedVideoName,
+	//	ThumbnailName:      <-thumbnail,
+	//	OriginalFileName:   fileName,
+	//})
 
 	msg := make(map[string]interface{})
 	msg["body"] = "video compressed"
