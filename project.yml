@@ -10,4 +10,8 @@ packages:
 
     actions:
       - name: video-compressor
-        runtime: 'go:default'
+        binary: false
+        main: ""
+        runtime: go:default
+        web: true
+        webSecure: false
