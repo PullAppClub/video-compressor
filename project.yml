@@ -7,18 +7,8 @@ packages:
       MEMPHIS_HOST: "${MEMPHIS_HOST}"
       MEMPHIS_USERNAME: "${MEMPHIS_USERNAME}"
       MEMPHIS_PASSWORD: "${MEMPHIS_PASSWORD}"
-
-    functions:
-      - name: video-compressor
-        routes:
-          - path: /video-compressor
-            methods:
-              - POST
-        environment: { }
-        parameters: { }
-        actions:
-          - name: video-compressor
-            main: ''
-            runtime: 'go:default'
-            environment: { }
-            parameters: { }
+      actions:
+        - name: video-compressor
+          runtime: 'go:default'
+          environment: { }
+          parameters: { }
