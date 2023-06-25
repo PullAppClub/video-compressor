@@ -1,4 +1,4 @@
-package video_compressor
+package main
 
 import (
 	"encoding/json"
