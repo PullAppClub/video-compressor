@@ -206,6 +206,11 @@ func handleThumbnail(fileName, bucket string, svc *s3.S3, result chan string) {
 }
 
 func Main(args map[string]interface{}) map[string]interface{} {
+
+	msg := make(map[string]interface{})
+	msg["body"] = "video compressed"
+	return msg
+
 	godotenv.Load()
 	bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
@@ -255,8 +260,4 @@ func Main(args map[string]interface{}) map[string]interface{} {
 		ThumbnailName:      <-thumbnail,
 		OriginalFileName:   fileName,
 	})
-
-	msg := make(map[string]interface{})
-	msg["body"] = "video compressed"
-	return msg
 }
