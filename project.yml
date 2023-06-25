@@ -10,5 +10,3 @@ packages:
       actions:
         - name: video-compressor
           runtime: 'go:default'
-          environment: { }
-          parameters: { }
