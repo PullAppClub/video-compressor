@@ -1,9 +1,5 @@
 packages:
   - name: video-compressor
-    routes:
-      - path: /video-compressor
-        methods:
-          - POST
     environment:
       AWS_ACCESS_KEY: "${AWS_ACCESS_KEY}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -14,6 +10,10 @@ packages:
 
     functions:
       - name: video-compressor
+        routes:
+          - path: /video-compressor
+            methods:
+              - POST
         environment: { }
         parameters: { }
         actions:
