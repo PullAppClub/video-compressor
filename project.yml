@@ -8,7 +8,7 @@ packages:
       MEMPHIS_USERNAME: "${MEMPHIS_USERNAME}"
       MEMPHIS_PASSWORD: "${MEMPHIS_PASSWORD}"
 
-    actions:
+    functions:
       - name: video-compressor
         binary: false
         main: ""
