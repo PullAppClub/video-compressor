@@ -14,3 +14,4 @@ packages:
         main: ""
         runtime: go:default
         web: true
+        memorySize: 512
