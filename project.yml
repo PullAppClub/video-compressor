@@ -1,12 +1,6 @@
 packages:
   - name: video-compressor
-    environment:
-      AWS_ACCESS_KEY: "${AWS_ACCESS_KEY}"
-      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-      AWS_BUCKET: "${AWS_BUCKET}"
-      MEMPHIS_HOST: "${MEMPHIS_HOST}"
-      MEMPHIS_USERNAME: "${MEMPHIS_USERNAME}"
-      MEMPHIS_PASSWORD: "${MEMPHIS_PASSWORD}"
+
     functions:
       - name: video-compressor
         runtime: 'go:default'
