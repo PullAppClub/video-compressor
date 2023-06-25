@@ -13,7 +13,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"sync"
 )
 
 type Request struct {
@@ -215,11 +214,11 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	// temp
 	fileName := "video.mp4"
 	tempBucket := "pullapptemp"
-	bucket := "pullappspaces"
+	//bucket := "pullappspaces"
 
-	var wg sync.WaitGroup
+	//var wg sync.WaitGroup
 
-	wg.Add(2)
+	//wg.Add(2)
 
 	svc, s3Error := createS3Instance(createS3InstanceParams{
 		secret: bucketSecret,
@@ -238,17 +237,17 @@ func Main(args map[string]interface{}) map[string]interface{} {
 		errorHandler(err)
 	}
 
-	go func() {
-		defer wg.Done()
-		handleVideo(fileName, bucket, svc, compressedVideoName)
-	}()
-
-	go func() {
-		defer wg.Done()
-		handleThumbnail(fileName, bucket, svc, thumbnail)
-	}()
-
-	defer wg.Wait()
+	//go func() {
+	//	defer wg.Done()
+	//	handleVideo(fileName, bucket, svc, compressedVideoName)
+	//}()
+	//
+	//go func() {
+	//	defer wg.Done()
+	//	handleThumbnail(fileName, bucket, svc, thumbnail)
+	//}()
+	//
+	//defer wg.Wait()
 
 	produceMessage(message{
 		CompressedFileName: <-compressedVideoName,
