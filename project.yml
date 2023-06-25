@@ -7,6 +7,6 @@ packages:
       MEMPHIS_HOST: "${MEMPHIS_HOST}"
       MEMPHIS_USERNAME: "${MEMPHIS_USERNAME}"
       MEMPHIS_PASSWORD: "${MEMPHIS_PASSWORD}"
-      actions:
+      functions:
         - name: video-compressor
           runtime: 'go:default'
