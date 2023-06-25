@@ -16,6 +16,16 @@ import (
 	"sync"
 )
 
+type Request struct {
+	Name string `json:"name"`
+}
+
+type Response struct {
+	StatusCode int               `json:"statusCode,omitempty"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Body       string            `json:"body,omitempty"`
+}
+
 type createS3InstanceParams struct {
 	secret string
 	keyId  string
@@ -195,7 +205,7 @@ func handleThumbnail(fileName, bucket string, svc *s3.S3, result chan string) {
 	result <- thumbnail
 }
 
-func main() {
+func Main(args map[string]interface{}) {
 	godotenv.Load()
 	bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
