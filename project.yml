@@ -1,6 +1,6 @@
 packages:
   - name: video-compressor
 
-    functions:
+    actions:
       - name: video-compressor
         runtime: 'go:default'
