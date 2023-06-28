@@ -72,7 +72,7 @@ func Main(args map[string]interface{}) map[string]interface{} {
 
 	// temp
 	fileName := "video.mp4"
-	tempBucket := "pullapptemp"
+	tempBucket := "pullappspaces"
 	//bucket := "pullappspaces"
 
 	//var wg sync.WaitGroup
