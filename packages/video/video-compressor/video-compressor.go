@@ -89,16 +89,6 @@ func handleThumbnail(fileName, bucket string, svc *s3.S3) (thumbnail string, err
 	return
 }
 
-type Request struct {
-	Name string `json:"name"`
-}
-
-type Response struct {
-	StatusCode int               `json:"statusCode,omitempty"`
-	Headers    map[string]string `json:"headers,omitempty"`
-	Body       string            `json:"body,omitempty"`
-}
-
 func createThumbnail(fileName string) (string, error) {
 	thumbnailName := fileName[:len(fileName)-4] + "_thumbnail.jpg"
 
@@ -231,15 +221,15 @@ func Main(args map[string]interface{}) map[string]interface{} {
 		errorHandler(err)
 	}
 
-	compressedVideoName := handleVideoCompressing(fileName, bucket, svc)
+	handleVideoCompressing(fileName, bucket, svc)
 
-	thumbnail, _ := handleThumbnail(fileName, bucket, svc)
+	handleThumbnail(fileName, bucket, svc)
 
-	produceMessage(message{
-		CompressedFileName: compressedVideoName,
-		ThumbnailName:      thumbnail,
-		OriginalFileName:   fileName,
-	})
+	//produceMessage(message{
+	//	CompressedFileName: compressedVideoName,
+	//	ThumbnailName:      thumbnail,
+	//	OriginalFileName:   fileName,
+	//})
 
 	msg := make(map[string]interface{})
 	msg["body"] = "video compressed"
