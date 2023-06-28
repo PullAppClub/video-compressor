@@ -75,31 +75,31 @@ func getVideoThumbnail(videoPath string, outputPath string) error {
 	return nil
 }
 
-func handleThumbnail(fileName, bucket string, svc *s3.S3) (thumbnail string, err error) {
-	thumbnail, err = createThumbnail(fileName)
-	if err != nil {
-		errorHandler(err)
-	}
-
-	thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
-	if thumbnailUploadErr != nil {
-		errorHandler(thumbnailUploadErr)
-	}
-
-	return
-}
-
-func createThumbnail(fileName string) (string, error) {
-	thumbnailName := fileName[:len(fileName)-4] + "_thumbnail.jpg"
-
-	thumbnailErr := getVideoThumbnail(fileName, thumbnailName)
-
-	if thumbnailErr != nil {
-		return "", thumbnailErr
-	}
-
-	return thumbnailName, nil
-}
+//func handleThumbnail(fileName, bucket string, svc *s3.S3) (thumbnail string, err error) {
+//	thumbnail, err = createThumbnail(fileName)
+//	if err != nil {
+//		errorHandler(err)
+//	}
+//
+//	thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
+//	if thumbnailUploadErr != nil {
+//		errorHandler(thumbnailUploadErr)
+//	}
+//
+//	return
+//}
+//
+//func createThumbnail(fileName string) (string, error) {
+//	thumbnailName := fileName[:len(fileName)-4] + "_thumbnail.jpg"
+//
+//	thumbnailErr := getVideoThumbnail(fileName, thumbnailName)
+//
+//	if thumbnailErr != nil {
+//		return "", thumbnailErr
+//	}
+//
+//	return thumbnailName, nil
+//}
 
 func compressVideo(inputPath string, outputPath string) error {
 	cmd := exec.Command("ffmpeg", "-i", inputPath, "-vf", "scale=1920:1080", outputPath)
@@ -223,7 +223,7 @@ func Main(args map[string]interface{}) map[string]interface{} {
 
 	handleVideoCompressing(fileName, bucket, svc)
 
-	handleThumbnail(fileName, bucket, svc)
+	//handleThumbnail(fileName, bucket, svc)
 
 	//produceMessage(message{
 	//	CompressedFileName: compressedVideoName,
