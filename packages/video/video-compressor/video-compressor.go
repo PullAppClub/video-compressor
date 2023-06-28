@@ -113,10 +113,10 @@ func handleThumbnail(fileName, bucket string, svc *s3.S3, result chan string) {
 		errorHandler(thumbnailErr)
 	}
 
-	thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
-	if thumbnailUploadErr != nil {
-		errorHandler(thumbnailUploadErr)
-	}
+	//thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
+	//if thumbnailUploadErr != nil {
+	//	errorHandler(thumbnailUploadErr)
+	//}
 
 	result <- thumbnail
 }
