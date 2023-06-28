@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"sync"
 )
 
 type downloadFromS3Params struct {
@@ -107,18 +106,18 @@ func createThumbnail(fileName string) (string, error) {
 	return thumbnailName, nil
 }
 
-func handleThumbnail(fileName, bucket string, svc *s3.S3, result chan string) {
-	thumbnail, thumbnailErr := createThumbnail(fileName)
-	if thumbnailErr != nil {
-		errorHandler(thumbnailErr)
+func handleThumbnail(fileName, bucket string, svc *s3.S3) (thumbnail string, err error) {
+	thumbnail, err = createThumbnail(fileName)
+	if err != nil {
+		errorHandler(err)
 	}
 
-	//thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
-	//if thumbnailUploadErr != nil {
-	//	errorHandler(thumbnailUploadErr)
-	//}
+	thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
+	if thumbnailUploadErr != nil {
+		errorHandler(thumbnailUploadErr)
+	}
 
-	result <- thumbnail
+	return
 }
 
 func Main(args map[string]interface{}) map[string]interface{} {
@@ -126,16 +125,11 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
 	//compressedVideoName := make(chan string)
-	thumbnail := make(chan string)
 
 	// temp
 	fileName := "video.mp4"
 	tempBucket := "pullappspaces"
 	bucket := "pullappspaces"
-
-	var wg sync.WaitGroup
-
-	wg.Add(1)
 
 	svc, s3Error := createS3Instance(createS3InstanceParams{
 		secret: bucketSecret,
@@ -159,12 +153,7 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	//	handleVideo(fileName, bucket, svc, compressedVideoName)
 	//}()
 	//
-	go func() {
-		defer wg.Done()
-		handleThumbnail(fileName, bucket, svc, thumbnail)
-	}()
-	//
-	defer wg.Wait()
+	handleThumbnail(fileName, bucket, svc)
 
 	//produceMessage(message{
 	//	CompressedFileName: <-compressedVideoName,
