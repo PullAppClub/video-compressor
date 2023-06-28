@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
+	"os/exec"
+	"sync"
 )
 
 type downloadFromS3Params struct {
@@ -63,21 +65,77 @@ func errorHandler(err error) {
 	os.Exit(1)
 }
 
+func uploadToS3(fileName, bucket string, svc *s3.S3) error {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	params := &s3.PutObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(fileName),
+		Body:   file,
+	}
+
+	_, err = svc.PutObject(params)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func getVideoThumbnail(videoPath string, outputPath string) error {
+	cmd := exec.Command("ffmpeg", "-i", videoPath, "-ss", "00:00:03", "-vframes", "1", outputPath)
+	if err := cmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func createThumbnail(fileName string) (string, error) {
+	thumbnailName := fileName[:len(fileName)-4] + "_thumbnail.jpg"
+
+	thumbnailErr := getVideoThumbnail(fileName, thumbnailName)
+
+	if thumbnailErr != nil {
+		return "", thumbnailErr
+	}
+
+	return thumbnailName, nil
+}
+
+func handleThumbnail(fileName, bucket string, svc *s3.S3, result chan string) {
+	thumbnail, thumbnailErr := createThumbnail(fileName)
+	if thumbnailErr != nil {
+		errorHandler(thumbnailErr)
+	}
+
+	thumbnailUploadErr := uploadToS3(thumbnail, bucket, svc)
+	if thumbnailUploadErr != nil {
+		errorHandler(thumbnailUploadErr)
+	}
+
+	result <- thumbnail
+}
+
 func Main(args map[string]interface{}) map[string]interface{} {
 	godotenv.Load()
 	bucketSecret := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	bucketSecretId := os.Getenv("AWS_ACCESS_KEY")
 	//compressedVideoName := make(chan string)
-	//thumbnail := make(chan string)
+	thumbnail := make(chan string)
 
 	// temp
 	fileName := "video.mp4"
 	tempBucket := "pullappspaces"
-	//bucket := "pullappspaces"
+	bucket := "pullappspaces"
 
-	//var wg sync.WaitGroup
+	var wg sync.WaitGroup
 
-	//wg.Add(2)
+	wg.Add(1)
 
 	svc, s3Error := createS3Instance(createS3InstanceParams{
 		secret: bucketSecret,
@@ -101,12 +159,12 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	//	handleVideo(fileName, bucket, svc, compressedVideoName)
 	//}()
 	//
-	//go func() {
-	//	defer wg.Done()
-	//	handleThumbnail(fileName, bucket, svc, thumbnail)
-	//}()
+	go func() {
+		defer wg.Done()
+		handleThumbnail(fileName, bucket, svc, thumbnail)
+	}()
 	//
-	//defer wg.Wait()
+	defer wg.Wait()
 
 	//produceMessage(message{
 	//	CompressedFileName: <-compressedVideoName,
